@@ -52,13 +52,15 @@ module testbench();
 
   initial begin
 
+    // Create header of truth table
     $display ("|##|A|B|C|D|F0|F1|F2|F3|F4|F5|F6|F7|F8|F9|");
     $display ("|==+=+=+=+=+==+==+==+==+==+==+==+==+==+==|");
 
 	  for (i = 0; i < 16; i = i + 1) 
 	    begin
-
-	    	a=(i/8)%2;
+		
+		// Initialization of a, b, c, and d simulates the translation of i into a 4-digit binary number
+		a=(i/8)%2;
 	    	b=(i/4)%2;
 	    	c=(i/2)%2;
     		d=(i/1)%2;
@@ -68,7 +70,7 @@ module testbench();
 	    	$display ("|%2d|%1d|%1d|%1d|%1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d|", i, a, b, c, d, f0, f1, f2, f3, f4, f5, f6, f7, f8, f9);
 		
         if(i%4==3)
-         $display ("|--+-+-+-+-+--+--+--+--+--+--+--+--+--+--|");
+		$display ("|--+-+-+-+-+--+--+--+--+--+--+--+--+--+--|"); // create dividing barriers between every 4 entries
 
   	end
  
