@@ -38,7 +38,7 @@ module Breadboard (w, x, y, z, r0, r1, r2, r3, r4, r5, r6, r7, r8, r9);
 	//yz
 	r8 = (y&z);    
 
-	//w'x'y'z + w'x'yz + w'xy'z' + w'xyz + wxy'z + wxyz' + wx'y'z' + wx'yz
+	//w'x'y'z + w'x'yz' + w'xy'z' + w'xyz + wxy'z + wxyz' + wx'y'z' + wx'yz
 	r9 = (!w&!x&!y&z)|(!w&!x&y&!z)|(!w&x&!y&!z)|(!w&x&y&z)|(w&x&!y&z)|(w&x&y&!z)|(w&!x&!y&!z)|(w&!x&y&z);    
 
 	end
