@@ -57,8 +57,8 @@ module testbench();
     initial begin
 
     // Create header of the truth table
-    $display ("|##|w|x|y|z|F0|F1|F2|F3|F4|F5|F6|F7|F8|F9|");
-    $display ("|==+=+=+=+=+==+==+==+==+==+==+==+==+==+==|");
+    $display ("|#|w|x|y|z|F0|F1|F2|F3|F4|F5|F6|F7|F8|F9|");
+    $display ("|=+=+=+=+=+==+==+==+==+==+==+==+==+==+==|");
         for (i = 0; i < 16; i = i + 1)
 
             begin
@@ -71,21 +71,21 @@ module testbench();
 
             #20;
             if(i == 10)
-                $display ("| %s|%1d|%1d|%1d|%1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d|", "A", a, b, c, d, f0, f1, f2, f3, f4, f5, f6, f7, f8, f9);
+                $display ("|%s|%1d|%1d|%1d|%1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d|", "A", a, b, c, d, f0, f1, f2, f3, f4, f5, f6, f7, f8, f9);
             else if(i == 11)
-                $display ("| %s|%1d|%1d|%1d|%1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d|", "B", a, b, c, d, f0, f1, f2, f3, f4, f5, f6, f7, f8, f9);
+                $display ("|%s|%1d|%1d|%1d|%1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d|", "B", a, b, c, d, f0, f1, f2, f3, f4, f5, f6, f7, f8, f9);
             else if(i == 12)
-                $display ("| %s|%1d|%1d|%1d|%1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d|", "C", a, b, c, d, f0, f1, f2, f3, f4, f5, f6, f7, f8, f9);
+                $display ("|%s|%1d|%1d|%1d|%1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d|", "C", a, b, c, d, f0, f1, f2, f3, f4, f5, f6, f7, f8, f9);
             else if(i == 13)
-                $display ("| %s|%1d|%1d|%1d|%1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d|", "D", a, b, c, d, f0, f1, f2, f3, f4, f5, f6, f7, f8, f9);
+                $display ("|%s|%1d|%1d|%1d|%1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d|", "D", a, b, c, d, f0, f1, f2, f3, f4, f5, f6, f7, f8, f9);
             else if(i == 14)
-                $display ("| %s|%1d|%1d|%1d|%1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d|", "E", a, b, c, d, f0, f1, f2, f3, f4, f5, f6, f7, f8, f9);
+                $display ("|%s|%1d|%1d|%1d|%1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d|", "E", a, b, c, d, f0, f1, f2, f3, f4, f5, f6, f7, f8, f9);
             else if(i == 15)
-                $display ("| %s|%1d|%1d|%1d|%1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d|", "F", a, b, c, d, f0, f1, f2, f3, f4, f5, f6, f7, f8, f9);
+                $display ("|%s|%1d|%1d|%1d|%1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d|", "F", a, b, c, d, f0, f1, f2, f3, f4, f5, f6, f7, f8, f9);
             else
-                $display ("|%2d|%1d|%1d|%1d|%1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d|", i, a, b, c, d, f0, f1, f2, f3, f4, f5, f6, f7, f8, f9);
+                $display ("|%1d|%1d|%1d|%1d|%1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d|", i, a, b, c, d, f0, f1, f2, f3, f4, f5, f6, f7, f8, f9);
             if(i%4==3)
-                $display ("|--+-+-+-+-+--+--+--+--+--+--+--+--+--+--|"); // Create dividing barriers between every 4 entries
+                $display ("|-+-+-+-+-+--+--+--+--+--+--+--+--+--+--|"); // Create dividing barriers between every 4 entries
 
             end
  
