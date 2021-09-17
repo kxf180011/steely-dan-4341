@@ -1,88 +1,98 @@
 // Cohort: Steely Dan
-// Code author(s): Ethan Peglar, Kevin Fan
+// Code author(s): Ethan Peglar, Kevin Fan, Falah Ansari, Jack Li
 
 module Breadboard (w, x, y, z, r0, r1, r2, r3, r4, r5, r6, r7, r8, r9);
 
-	input w, x, y, z;
-	output r0, r1, r2, r3, r4, r5, r6, r7, r8, r9;
-	reg r0, r1, r2, r3, r4, r5, r6, r7, r8, r9;
+    input w, x, y, z;
+    output r0, r1, r2, r3, r4, r5, r6, r7, r8, r9;
+    reg r0, r1, r2, r3, r4, r5, r6, r7, r8, r9;
 
-	always @ (w, x, y, z, r0, r1, r2, r3, r4, r5, r6, r7, r8, r9)
+    always @ (w, x, y, z, r0, r1, r2, r3, r4, r5, r6, r7, r8, r9)
 
-	begin
+    begin
 
-	//wx + wz + xy + yz                            
-	r0 = (w&x)|(w&z)|(x&y)|(y&z);      
+    //wx + wz + xy + yz                            
+    r0 = (w&x)|(w&z)|(x&y)|(y&z);      
 
-	//wx + xz +yz                            
-	r1 = (w&x)|(x&z)|(y&z);    
+    //wx + xz +yz                            
+    r1 = (w&x)|(x&z)|(y&z);    
 
-	//wyz + wxz + xyz + wxy                            
-	r2 = (w&y&z)|(w&x&z)|(x&y&z)|(w&x&y);    
+    //wyz + wxz + xyz + wxy                            
+    r2 = (w&y&z)|(w&x&z)|(x&y&z)|(w&x&y);    
 
-	//wz + xy
-	r3 = (w&z)|(x&y);    
+    //wz + xy
+    r3 = (w&z)|(x&y);    
 
-	//yz
-	r4 = (y&z);    
+    //yz
+    r4 = (y&z);    
 
-	//w'x' + y'z'
-	r5 = (!w&!x)|(!y&!z);    
+    //w'x' + y'z'
+    r5 = (!w&!x)|(!y&!z);    
 
-	//w'x'y + w'y'z + xy'z + wx'y'z'
-	r6 = (!w&!x&y)|(!w&!y&z)|(x&!y&z)|(w&!x&!y&!z);    
+    //w'x'y + w'y'z + xy'z + wx'y'z'
+    r6 = (!w&!x&y)|(!w&!y&z)|(x&!y&z)|(w&!x&!y&!z);    
 
-	//w'x'yz + w'xy'z + w'xyz' + wxy'z' + wx'y'z + wx'yz'
-	r7 = (!w&!x&y&z)|(!w&x&!y&z)|(!w&x&y&!z)|(w&x&!y&!z)|(w&!x&!y&z)|(w&!x&y&!z);    
+    //w'x'yz + w'xy'z + w'xyz' + wxy'z' + wx'y'z + wx'yz'
+    r7 = (!w&!x&y&z)|(!w&x&!y&z)|(!w&x&y&!z)|(w&x&!y&!z)|(w&!x&!y&z)|(w&!x&y&!z);    
 
-	//yz
-	r8 = (y&z);    
+    //yz
+    r8 = (y&z);    
 
-	//w'x'y'z + w'x'yz' + w'xy'z' + w'xyz + wxy'z + wxyz' + wx'y'z' + wx'yz
-	r9 = (!w&!x&!y&z)|(!w&!x&y&!z)|(!w&x&!y&!z)|(!w&x&y&z)|(w&x&!y&z)|(w&x&y&!z)|(w&!x&!y&!z)|(w&!x&y&z);    
+    //w'x'y'z + w'x'yz' + w'xy'z' + w'xyz + wxy'z + wxyz' + wx'y'z' + wx'yz
+    r9 = (!w&!x&!y&z)|(!w&!x&y&!z)|(!w&x&!y&!z)|(!w&x&y&z)|(w&x&!y&z)|(w&x&y&!z)|(w&!x&!y&!z)|(w&!x&y&z);    
 
-	end
+    end
 
 endmodule
 
 module testbench();
 
-	reg [4:0] i;
-	reg a, b, c, d;
+    reg [4:0] i;
+    reg a, b, c, d;
 
- 	wire  f0, f1, f2, f3, f4, f5, f6, f7, f8, f9;
+     wire  f0, f1, f2, f3, f4, f5, f6, f7, f8, f9;
   
-	Breadboard stimulus(a, b, c, d, f0, f1, f2, f3, f4, f5, f6, f7, f8, f9);
+    Breadboard stimulus(a, b, c, d, f0, f1, f2, f3, f4, f5, f6, f7, f8, f9);
 
-	initial begin
+    initial begin
 
-	// Create header of the truth table
-	$display ("|##|A|B|C|D|F0|F1|F2|F3|F4|F5|F6|F7|F8|F9|");
-	$display ("|==+=+=+=+=+==+==+==+==+==+==+==+==+==+==|");
+    // Create header of the truth table
+    $display ("|##|w|x|y|z|F0|F1|F2|F3|F4|F5|F6|F7|F8|F9|");
+    $display ("|==+=+=+=+=+==+==+==+==+==+==+==+==+==+==|");
+        for (i = 0; i < 16; i = i + 1)
 
-		for (i = 0; i < 16; i = i + 1)
+            begin
 
-			begin
+            // Initialization of a, b, c, and d simulates the translation of i into a 4-digit binary number
+            a=(i/8)%2;
+            b=(i/4)%2;
+            c=(i/2)%2;
+            d=(i/1)%2;
 
-			// Initialization of a, b, c, and d simulates the translation of i into a 4-digit binary number
-			a=(i/8)%2;
-			b=(i/4)%2;
-			c=(i/2)%2;
-			d=(i/1)%2;
+            #20;
+            if(i == 10)
+                $display ("| %s|%1d|%1d|%1d|%1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d|", "A", a, b, c, d, f0, f1, f2, f3, f4, f5, f6, f7, f8, f9);
+            else if(i == 11)
+                $display ("| %s|%1d|%1d|%1d|%1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d|", "B", a, b, c, d, f0, f1, f2, f3, f4, f5, f6, f7, f8, f9);
+            else if(i == 12)
+                $display ("| %s|%1d|%1d|%1d|%1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d|", "C", a, b, c, d, f0, f1, f2, f3, f4, f5, f6, f7, f8, f9);
+            else if(i == 13)
+                $display ("| %s|%1d|%1d|%1d|%1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d|", "D", a, b, c, d, f0, f1, f2, f3, f4, f5, f6, f7, f8, f9);
+            else if(i == 14)
+                $display ("| %s|%1d|%1d|%1d|%1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d|", "E", a, b, c, d, f0, f1, f2, f3, f4, f5, f6, f7, f8, f9);
+            else if(i == 15)
+                $display ("| %s|%1d|%1d|%1d|%1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d|", "F", a, b, c, d, f0, f1, f2, f3, f4, f5, f6, f7, f8, f9);
+            else
+                $display ("|%2d|%1d|%1d|%1d|%1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d|", i, a, b, c, d, f0, f1, f2, f3, f4, f5, f6, f7, f8, f9);
+            if(i%4==3)
+                $display ("|--+-+-+-+-+--+--+--+--+--+--+--+--+--+--|"); // Create dividing barriers between every 4 entries
 
-			#20;
-
-			$display ("|%2d|%1d|%1d|%1d|%1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d|", i, a, b, c, d, f0, f1, f2, f3, f4, f5, f6, f7, f8, f9);
-		
-			if(i%4==3)
-				$display ("|--+-+-+-+-+--+--+--+--+--+--+--+--+--+--|"); // Create dividing barriers between every 4 entries
-
-			end
+            end
  
-	#20;
+    #20;
 
-	$finish;
+    $finish;
 
-	end
+    end
 
 endmodule
