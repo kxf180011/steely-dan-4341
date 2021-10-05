@@ -50,10 +50,10 @@ module FullAdder(A,B,C,carry,sum);
 endmodule
 
 module ADD_SUB(inputA,inputB,mode,sum,carry,overflow);
-    input [3:0] inputA;
-	input [3:0] inputB;
+    input [15:0] inputA;
+	input [15:0] inputB;
     input mode;
-    output [3:0] sum;
+    output [31:0] sum;
 	output carry;
     output overflow;
     wire b0,b1,b2,b3; //XOR Interfaces
@@ -128,27 +128,27 @@ endmodule
 
 
 module BreadBoard(inputA,inputB,command,result,error);
-input [3:0]inputA;
-input [3:0]inputB;
+input [15:0]inputA;
+input [15:0]inputB;
 input [3:0]command;
-output [3:0]result;
+output [31:0]result;
 output error;
-wire [3:0]inputA;
-wire [3:0]inputB;
+wire [15:0]inputA;
+wire [15:0]inputB;
 wire [3:0]command;
-reg [3:0]result;
+reg [31:0]result;
 reg error;
 
 
 //Local Variables
 //Full Adder
 reg mode;
-wire [3:0] sum;
+wire [31:0] sum;
 wire carry;
 wire overflow;
 
 //Multiplexer
-wire [15:0][3:0] channels ;
+wire [15:0][3:0] channels;
 wire [15:0] onehotMux;
 wire [3:0] b;
 
@@ -187,10 +187,10 @@ endmodule
 
 module TestBench();
  
-  reg [3:0] inputA;
-  reg [3:0] inputB;
+  reg [15:0] inputA;
+  reg [15:0] inputB;
   reg [3:0] command;
-  wire [3:0] result;
+  wire [31:0] result;
   wire error;
   BreadBoard BB8(inputA,inputB,command,result,error);
    
@@ -199,18 +199,18 @@ module TestBench();
   reg [7:0] charA;
   
   initial begin
-    assign inputA  = 4'b0110;
-	assign inputB  = 4'b0001;
-	assign command = 4'b0001;
+    assign inputA  = 255;
+	assign inputB  = 127;
+	assign command = 1;
 	
 
 	#10;
-	$display("[Input A:    %2d, Input B:    %2d][Add:%b][Output:             %2d, Error: %b]",inputA,inputB,command,result,error);
+	$display("[Input A:%6d, Input B:%6d][Add:%b][Output:%10d, Error: %b]",inputA,inputB,command,result,error);
   
-   	assign command=4'b0010;
+   	assign command = 2;
 	#10;
 
-	$display("[Input A:    %2d, Input B:    %2d][Sub:%b][Output:             %2d, Error: %b]",inputA,inputB,command,result,error);
+	$display("[Input A:%6d, Input B:%6d][Sub:%b][Output:%10d, Error: %b]",inputA,inputB,command,result,error);
 
 	#60; 
 	$finish;
