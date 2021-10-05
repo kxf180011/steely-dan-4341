@@ -1,26 +1,4 @@
-//=============================================
-// Half Adder
-//=============================================
-module HalfAdder(A,B,carry,sum);
-	input A;
-	input B;
-	output carry;
-	output sum;
-	reg carry;
-	reg sum;
-//---------------------------------------------	
-	always @(*) 
-	  begin
-	    sum= A ^ B;
-	    carry= A & B;
-	  end
-//---------------------------------------------
-endmodule
 
-
-//=============================================
-// Full Adder
-//=============================================
 module FullAdder(A,B,C,carry,sum);
 	input A;
 	input B;
@@ -28,16 +6,12 @@ module FullAdder(A,B,C,carry,sum);
 	output carry;
 	output sum;
 	reg carry;
-	reg sum;
-//---------------------------------------------	
+	reg sum;	
 	wire c0;
 	wire s0;
 	wire c1;
 	wire s1;
-//---------------------------------------------
-	HalfAdder ha1(A ,B,c0,s0);
-	HalfAdder ha2(s0,C,c1,s1);
-//---------------------------------------------
+
 	always @(*) 
 	  begin
 	    sum=s1;//
@@ -45,7 +19,6 @@ module FullAdder(A,B,C,carry,sum);
 	    carry=c1|c0;//
 		carry= ((A^B)&C)|(A&B);  
 	  end
-//---------------------------------------------
 	
 endmodule
 
