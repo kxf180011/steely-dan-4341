@@ -1,3 +1,17 @@
+module HalfAdder(A,B,carry,sum);
+	input A;
+	input B;
+	output carry;
+	output sum;
+	reg carry;
+	reg sum;
+
+	always @(*) 
+	  begin
+	    sum= A ^ B;
+	    carry= A & B;
+	  end
+endmodule
 
 module FullAdder(A,B,C,carry,sum);
 	input A;
@@ -14,12 +28,11 @@ module FullAdder(A,B,C,carry,sum);
 
 	always @(*) 
 	  begin
-	    sum=s1;
+		sum=s1;
 		sum=A^B^C;
-	    carry=c1|c0;
+		carry=c1|c0;
 		carry=((A^B)&C)|(A&B);  
 	  end
-	
 endmodule
 
 module ADD_SUB(inputA,inputB,mode,sum,carry,overflow);
@@ -71,7 +84,60 @@ module ADD_SUB(inputA,inputB,mode,sum,carry,overflow);
  
 endmodule
 
+module MULT(inputA,inputB,product);
+	input [15:0] inputA;
+	input [15:0] inputB;
+    output [31:0] product;
+    wire b2,b3,b4,b5,b6,b7,b8,b9,b10,b11,b12,b13,b14,b15,b16,b17,b18,b19,b20,b21,b22,b23,b24,b25,b26,b27,b28,b29,b30,b31; //Output Interfaces
+	wire c0,c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14,c15,c16,c17,c18,c19,c20,c21,c22,c23,c24,c25,c26,c27,c28,c29,c30,c31; //Carry Interfaces
 
+	HalfAdder A1(inputA[0]&inputB[0], 1'b0,			c1, 				product[0]);
+	HalfAdder A2(inputA[1]&inputB[0], c1,			c2,					b2);
+	HalfAdder A3(inputA[2]&inputB[0], c2,			c3,					b3);
+	HalfAdder A4(inputA[3]&inputB[0], c3,			c4,					b4);
+
+	HalfAdder A5(inputA[0]&inputB[1], b2,			c5,					product[1]);
+	FullAdder A6(inputA[1]&inputB[1], b3,	c5,		c6,					b6);
+	FullAdder A7(inputA[2]&inputB[1], b4,	c6,		c7,					b7);
+	FullAdder A8(inputA[3]&inputB[1], c3,	c7,		c8,					b8);
+
+	HalfAdder A9(inputA[0]&inputB[2], b6,			c9,					product[2]);
+	FullAdder A10(inputA[1]&inputB[2], b7,	c9,		c10,				b10);
+	FullAdder A11(inputA[2]&inputB[2],b8,	c10,	c11,				b11);
+	FullAdder A12(inputA[3]&inputB[2],c7,	c11,	c12,				b12);
+
+	HalfAdder A13(inputA[0]&inputB[3],b10,			c13,				product[3]);
+	FullAdder A14(inputA[1]&inputB[3],b11,	c13,	c14,				product[4]);
+	FullAdder A15(inputA[2]&inputB[3],b12,	c14,	c15,				product[5]);
+	FullAdder A16(inputA[3]&inputB[3],c12,	c15,	product[7],			product[6]);
+
+	assign product[8] = 1'b0;
+	assign product[9] = 1'b0;
+	assign product[10] = 1'b0;
+	assign product[11] = 1'b0;
+	assign product[12] = 1'b0;
+	assign product[13] = 1'b0;
+	assign product[14] = 1'b0;
+	assign product[15] = 1'b0;
+	assign product[16] = 1'b0;
+	assign product[17] = 1'b0;
+	assign product[18] = 1'b0;
+	assign product[19] = 1'b0;
+	assign product[20] = 1'b0;
+	assign product[21] = 1'b0;
+	assign product[22] = 1'b0;
+	assign product[23] = 1'b0;
+	assign product[24] = 1'b0;
+	assign product[25] = 1'b0;
+	assign product[26] = 1'b0;
+	assign product[27] = 1'b0;
+	assign product[28] = 1'b0;
+	assign product[29] = 1'b0;
+	assign product[30] = 1'b0;
+	assign product[31] = 1'b0;
+
+
+endmodule
 
 module DEC(binary,onehot);
 	input [3:0] binary;
@@ -144,6 +210,9 @@ wire [31:0] sum;
 wire carry;
 wire overflow;
 
+//Multiplier
+wire [31:0] product;
+
 //Multiplexer
 wire [127:0][31:0] channels;
 wire [15:0] onehotMux;
@@ -152,13 +221,14 @@ wire [31:0] b;
 DEC DecAlpha(command,onehotMux);
 ADD_SUB nept(inputA,inputB,mode,sum,carry,overflow);
 MUX satu(channels,onehotMux,b);
+MULT uran(inputA,inputB,product);
 
 
 
 assign channels[ 0]=0;//GROUND=0
 assign channels[ 1]=sum;//Addition
 assign channels[ 2]=sum;//Subtraction
-assign channels[ 3]=0;//mult;//Multiplication
+assign channels[ 3]=product;//Multiplication
 assign channels[ 4]=0;//div;//Division
 assign channels[ 5]=0;//mod;//Modulo
 assign channels[ 6]=0;//GROUND=0
@@ -196,8 +266,8 @@ module TestBench();
   reg [7:0] charA;
   
   initial begin
-    assign inputA  = 32000;
-	assign inputB  = 16000;
+    assign inputA  = 5;
+	assign inputB  = 4;
 	assign command = 1;
 	
 
@@ -208,6 +278,11 @@ module TestBench();
 	#10;
 
 	$display("[Input A:%6d, Input B:%6d][Sub:%b][Output:%10d, Error: %b]",inputA,inputB,command,result,error);
+	
+	assign command = 3;
+	#10;
+
+	$display("[Input A:%6d, Input B:%6d][Mul:%b][Output:%10d, Error: %b]",inputA,inputB,command,result,error);
 
 	#60; 
 	$finish;
