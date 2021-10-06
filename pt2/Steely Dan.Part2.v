@@ -92,7 +92,6 @@ module MULT_ASSIST(inputA,bitB,carryinbit,carryinlist,carryoutbit,carryoutlist,p
 	output carryoutbit;
 	output [14:0] carryoutlist;
 	output productbit;
-	wire    b2,b3,b4,b5,b6,b7,b8,b9,b10,b11,b12,b13,b14,b15,b16,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,d13,d14,d15,d16; //Output Interfaces
 	wire c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14,c15,c16,c17,c18,c19,c20,c21,c22,c23,c24,c25,c26,c27,c28,c29,c30,c31; //Carry Interfaces
 
 	HalfAdder A0(inputA[0]&bitB,		carryinlist[0],					c1,				productbit);
@@ -136,8 +135,7 @@ module MULT(inputA,inputB,product);
 	wire [14:0] carrylistN;
 	wire [14:0] carrylistO;
 	wire [14:0] carrylistP;
-    wire    b2,b3,b4,b5,b6,b7,b8,b9,b10,b11,b12,b13,b14,b15,b16,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,d13,d14,d15,d16; //Output Interfaces
-	wire c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14,c15,c16,c17,c18,c19,c20,c21,c22,c23,c24,c25,c26,c27,c28,c29,c30,c31,c32; //Carry Interfaces
+	wire c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14,c15,c16,c17,c18,c19,c20,c21,c22,c23,c24,c25,c26,c27,c28,c29,c30,c31; //Carry Interfaces
 
 	HalfAdder A1(inputA[0]&inputB[0], 	 	1'b0,			c1, 			product[0]);
 	HalfAdder A2(inputA[1]&inputB[0], 	 	c1,				c2,				carrylistA[0]);
@@ -156,10 +154,6 @@ module MULT(inputA,inputB,product);
 	HalfAdder A15(inputA[14]&inputB[0], 	c14,			c15,			carrylistA[13]);
 	HalfAdder A16(inputA[15]&inputB[0], 	c15,			c16,			carrylistA[14]);
 
-	initial begin
-		$display("%b,%b,%b",inputA[0],carrylistA[0],carrylistA[1]);
-	end
-
 	MULT_ASSIST M1(inputA,inputB[1],c16,carrylistA,c17,carrylistB,product[1]);
 	MULT_ASSIST M2(inputA,inputB[2],c17,carrylistB,c18,carrylistC,product[2]);
 	MULT_ASSIST M3(inputA,inputB[3],c18,carrylistC,c19,carrylistD,product[3]);
@@ -177,21 +171,21 @@ module MULT(inputA,inputB,product);
 
 	MULT_ASSIST M15(inputA,inputB[15],c30,carrylistO,product[31],carrylistP,product[15]);
 
-	assign product[16] = carrylistB[0];
-	assign product[17] = carrylistB[1];
-	assign product[18] = carrylistB[2];
-	assign product[19] = carrylistB[3];
-	assign product[20] = carrylistB[4];
-	assign product[21] = carrylistB[5];
-	assign product[22] = carrylistB[6];
-	assign product[23] = carrylistB[7];
-	assign product[24] = carrylistB[8];
-	assign product[25] = carrylistB[9];
-	assign product[26] = carrylistB[10];
-	assign product[27] = carrylistB[11];
-	assign product[28] = carrylistB[12];
-	assign product[29] = carrylistB[13];
-	assign product[30] = carrylistB[14];
+	assign product[16] = carrylistP[0];
+	assign product[17] = carrylistP[1];
+	assign product[18] = carrylistP[2];
+	assign product[19] = carrylistP[3];
+	assign product[20] = carrylistP[4];
+	assign product[21] = carrylistP[5];
+	assign product[22] = carrylistP[6];
+	assign product[23] = carrylistP[7];
+	assign product[24] = carrylistP[8];
+	assign product[25] = carrylistP[9];
+	assign product[26] = carrylistP[10];
+	assign product[27] = carrylistP[11];
+	assign product[28] = carrylistP[12];
+	assign product[29] = carrylistP[13];
+	assign product[30] = carrylistP[14];
 
 endmodule
 
@@ -219,12 +213,9 @@ module DEC(binary,onehot);
 endmodule;
 
 module MUX(channels, select, b);
-input [127:0][31:0] channels;
+input [15:0][31:0] channels;
 input      [15:0] select;
 output      [31:0] b;
-wire  [127:0][31:0] channels;
-wire        [31:0] b;
-
 
 	assign b = ({16{select[15]}} & channels[15]) | 
                ({16{select[14]}} & channels[14]) |
@@ -238,7 +229,7 @@ wire        [31:0] b;
 			   ({16{select[ 6]}} & channels[ 6]) |
 			   ({16{select[ 5]}} & channels[ 5]) |
 			   ({16{select[ 4]}} & channels[ 4]) |
-			   ({16{select[ 3]}} & channels[ 3]) |
+			   ({32{select[ 3]}} & channels[ 3]) |
 			   ({16{select[ 2]}} & channels[ 2]) | 
                ({16{select[ 1]}} & channels[ 1]) |
                ({16{select[ 0]}} & channels[ 0]) ;
@@ -258,6 +249,8 @@ wire [3:0]command;
 reg [31:0]result;
 reg error;
 
+reg [31:0]debug;
+
 
 //Local Variables
 //Full Adder
@@ -270,7 +263,7 @@ wire overflow;
 wire [31:0] product;
 
 //Multiplexer
-wire [127:0][31:0] channels;
+wire [15:0][31:0] channels;
 wire [15:0] onehotMux;
 wire [31:0] b;
 
@@ -298,6 +291,15 @@ assign channels[13]=0;//GROUND=0
 assign channels[14]=0;//GROUND=0
 assign channels[15]=0;//GROUND=0
 
+/*always @(*) begin
+	debug = b;
+	#60
+	$display("%b", debug);
+	debug = product;
+	#10
+	$display("%b", debug);
+end*/
+
 always @(*)  
 begin
 	mode=command[1];
@@ -315,28 +317,23 @@ module TestBench();
   reg [3:0] command;
   wire [31:0] result;
   wire error;
-  BreadBoard BB8(inputA,inputB,command,result,error);
-   
-  reg k1,k2,k3,k4,k5;
-  reg segA,segB,segC,segD,segE,segF,segG;
-  reg [7:0] charA;
+  BreadBoard ALU(inputA,inputB,command,result,error);
   
   initial begin
-    assign inputA  = 255;
-	assign inputB  = 127;
-	assign command = 1;
-	
+    assign inputA  = 16'b0000011111111111;
+	assign inputB  = 16'b0000000111111111;
+	assign command =  1;
 
-	#10;
+	#60;
 	$display("[Input A:%6d, Input B:%6d][Add:%b][Output:%10d, Error: %b]",inputA,inputB,command,result,error);
   
 	assign command = 2;
-	#10;
+	#60;
 
 	$display("[Input A:%6d, Input B:%6d][Sub:%b][Output:%10d, Error: %b]",inputA,inputB,command,result,error);
 	
 	assign command = 3;
-	#10;
+	#60;
 
 	$display("[Input A:%6d, Input B:%6d][Mul:%b][Output:%10d, Error: %b]",inputA,inputB,command,result,error);
 
