@@ -84,58 +84,114 @@ module ADD_SUB(inputA,inputB,mode,sum,carry,overflow);
  
 endmodule
 
+module MULT_ASSIST(inputA,bitB,carryinbit,carryinlist,carryoutbit,carryoutlist,productbit);
+	input [15:0] inputA;
+	input bitB;
+	input carryinbit;
+	input [14:0] carryinlist;
+	output carryoutbit;
+	output [14:0] carryoutlist;
+	output productbit;
+	wire    b2,b3,b4,b5,b6,b7,b8,b9,b10,b11,b12,b13,b14,b15,b16,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,d13,d14,d15,d16; //Output Interfaces
+	wire c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14,c15,c16,c17,c18,c19,c20,c21,c22,c23,c24,c25,c26,c27,c28,c29,c30,c31; //Carry Interfaces
+
+	HalfAdder A0(inputA[0]&bitB,		carryinlist[0],					c1,				productbit);
+	FullAdder A1(inputA[1]&bitB,	 	carryinlist[1],			c1,		c2,				carryoutlist[0]);
+	FullAdder A2(inputA[2]&bitB,	 	carryinlist[2],			c2,		c3,				carryoutlist[1]);
+	FullAdder A3(inputA[3]&bitB,		carryinlist[3],			c3,		c4,				carryoutlist[2]);
+	FullAdder A4(inputA[4]&bitB,	 	carryinlist[4],			c4,		c5,				carryoutlist[3]);
+	FullAdder A5(inputA[5]&bitB,	 	carryinlist[5],			c5,		c6,				carryoutlist[4]);
+	FullAdder A6(inputA[6]&bitB,	 	carryinlist[6],			c6,		c7,				carryoutlist[5]);
+	FullAdder A7(inputA[7]&bitB,	 	carryinlist[7],			c6,		c7,				carryoutlist[6]);
+	FullAdder A8(inputA[8]&bitB,	 	carryinlist[8],			c7,		c8,				carryoutlist[7]);
+	FullAdder A9(inputA[9]&bitB,	 	carryinlist[9],			c8,		c10,			carryoutlist[8]);
+	FullAdder A10(inputA[10]&bitB,	 	carryinlist[10],		c10,	c11,			carryoutlist[9]);
+	FullAdder A11(inputA[11]&bitB,	 	carryinlist[11],		c11,	c12,			carryoutlist[10]);
+	FullAdder A12(inputA[12]&bitB,	 	carryinlist[12],		c12,	c13,			carryoutlist[11]);
+	FullAdder A13(inputA[13]&bitB,		carryinlist[13],		c13,	c14,			carryoutlist[12]);
+	FullAdder A14(inputA[14]&bitB,	 	carryinlist[14],		c14,	c15,			carryoutlist[13]);
+	FullAdder A15(inputA[15]&bitB,	 	carryinbit,				c15,	carryoutbit,	carryoutlist[14]);
+
+endmodule
+
 module MULT(inputA,inputB,product);
 	input [15:0] inputA;
 	input [15:0] inputB;
     output [31:0] product;
-    wire b2,b3,b4,b5,b6,b7,b8,b9,b10,b11,b12,b13,b14,b15,b16,b17,b18,b19,b20,b21,b22,b23,b24,b25,b26,b27,b28,b29,b30,b31; //Output Interfaces
-	wire c0,c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14,c15,c16,c17,c18,c19,c20,c21,c22,c23,c24,c25,c26,c27,c28,c29,c30,c31; //Carry Interfaces
+	wire carryinbit;
+	wire [14:0] carrylistA;
+	wire carryoutbit;
+	wire [14:0] carrylistB;
+	wire [14:0] carrylistC;
+	wire [14:0] carrylistD;
+	wire [14:0] carrylistE;
+	wire [14:0] carrylistF;
+	wire [14:0] carrylistG;
+	wire [14:0] carrylistH;
+	wire [14:0] carrylistI;
+	wire [14:0] carrylistJ;
+	wire [14:0] carrylistK;
+	wire [14:0] carrylistL;
+	wire [14:0] carrylistM;
+	wire [14:0] carrylistN;
+	wire [14:0] carrylistO;
+	wire [14:0] carrylistP;
+    wire    b2,b3,b4,b5,b6,b7,b8,b9,b10,b11,b12,b13,b14,b15,b16,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,d13,d14,d15,d16; //Output Interfaces
+	wire c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14,c15,c16,c17,c18,c19,c20,c21,c22,c23,c24,c25,c26,c27,c28,c29,c30,c31,c32; //Carry Interfaces
 
-	HalfAdder A1(inputA[0]&inputB[0], 1'b0,			c1, 				product[0]);
-	HalfAdder A2(inputA[1]&inputB[0], c1,			c2,					b2);
-	HalfAdder A3(inputA[2]&inputB[0], c2,			c3,					b3);
-	HalfAdder A4(inputA[3]&inputB[0], c3,			c4,					b4);
+	HalfAdder A1(inputA[0]&inputB[0], 	 	1'b0,			c1, 			product[0]);
+	HalfAdder A2(inputA[1]&inputB[0], 	 	c1,				c2,				carrylistA[0]);
+	HalfAdder A3(inputA[2]&inputB[0], 	 	c2,				c3,				carrylistA[1]);
+	HalfAdder A4(inputA[3]&inputB[0], 	 	c3,				c4,				carrylistA[2]);
+	HalfAdder A5(inputA[4]&inputB[0],	  	c4,				c5, 			carrylistA[3]);
+	HalfAdder A6(inputA[5]&inputB[0], 	 	c5,				c6,				carrylistA[4]);
+	HalfAdder A7(inputA[6]&inputB[0], 	 	c6,				c7,				carrylistA[5]);
+	HalfAdder A8(inputA[7]&inputB[0], 		c7,				c8,				carrylistA[6]);
+	HalfAdder A9(inputA[8]&inputB[0], 		c8,				c9, 			carrylistA[7]);
+	HalfAdder A10(inputA[9]&inputB[0],		c9,				c10,			carrylistA[8]);
+	HalfAdder A11(inputA[10]&inputB[0],		c10,			c11,			carrylistA[9]);
+	HalfAdder A12(inputA[11]&inputB[0], 	c11,			c12,			carrylistA[10]);
+	HalfAdder A13(inputA[12]&inputB[0], 	c12,			c13, 			carrylistA[11]);
+	HalfAdder A14(inputA[13]&inputB[0], 	c13,			c14,			carrylistA[12]);
+	HalfAdder A15(inputA[14]&inputB[0], 	c14,			c15,			carrylistA[13]);
+	HalfAdder A16(inputA[15]&inputB[0], 	c15,			c16,			carrylistA[14]);
 
-	HalfAdder A5(inputA[0]&inputB[1], b2,			c5,					product[1]);
-	FullAdder A6(inputA[1]&inputB[1], b3,	c5,		c6,					b6);
-	FullAdder A7(inputA[2]&inputB[1], b4,	c6,		c7,					b7);
-	FullAdder A8(inputA[3]&inputB[1], c3,	c7,		c8,					b8);
+	initial begin
+		$display("%b,%b,%b",inputA[0],carrylistA[0],carrylistA[1]);
+	end
 
-	HalfAdder A9(inputA[0]&inputB[2], b6,			c9,					product[2]);
-	FullAdder A10(inputA[1]&inputB[2], b7,	c9,		c10,				b10);
-	FullAdder A11(inputA[2]&inputB[2],b8,	c10,	c11,				b11);
-	FullAdder A12(inputA[3]&inputB[2],c7,	c11,	c12,				b12);
+	MULT_ASSIST M1(inputA,inputB[1],c16,carrylistA,c17,carrylistB,product[1]);
+	MULT_ASSIST M2(inputA,inputB[2],c17,carrylistB,c18,carrylistC,product[2]);
+	MULT_ASSIST M3(inputA,inputB[3],c18,carrylistC,c19,carrylistD,product[3]);
+	MULT_ASSIST M4(inputA,inputB[4],c19,carrylistD,c20,carrylistE,product[4]);
+	MULT_ASSIST M5(inputA,inputB[5],c20,carrylistE,c21,carrylistF,product[5]);
+	MULT_ASSIST M6(inputA,inputB[6],c21,carrylistF,c22,carrylistG,product[6]);
+	MULT_ASSIST M7(inputA,inputB[7],c22,carrylistG,c23,carrylistH,product[7]);
+	MULT_ASSIST M8(inputA,inputB[8],c23,carrylistH,c24,carrylistI,product[8]);
+	MULT_ASSIST M9(inputA,inputB[9],c24,carrylistI,c25,carrylistJ,product[9]);
+	MULT_ASSIST M10(inputA,inputB[10],c25,carrylistJ,c26,carrylistK,product[10]);
+	MULT_ASSIST M11(inputA,inputB[11],c26,carrylistK,c27,carrylistL,product[11]);
+	MULT_ASSIST M12(inputA,inputB[12],c27,carrylistL,c28,carrylistM,product[12]);
+	MULT_ASSIST M13(inputA,inputB[13],c28,carrylistM,c29,carrylistN,product[13]);
+	MULT_ASSIST M14(inputA,inputB[14],c29,carrylistN,c30,carrylistO,product[14]);
 
-	HalfAdder A13(inputA[0]&inputB[3],b10,			c13,				product[3]);
-	FullAdder A14(inputA[1]&inputB[3],b11,	c13,	c14,				product[4]);
-	FullAdder A15(inputA[2]&inputB[3],b12,	c14,	c15,				product[5]);
-	FullAdder A16(inputA[3]&inputB[3],c12,	c15,	product[7],			product[6]);
+	MULT_ASSIST M15(inputA,inputB[15],c30,carrylistO,product[31],carrylistP,product[15]);
 
-	assign product[8] = 1'b0;
-	assign product[9] = 1'b0;
-	assign product[10] = 1'b0;
-	assign product[11] = 1'b0;
-	assign product[12] = 1'b0;
-	assign product[13] = 1'b0;
-	assign product[14] = 1'b0;
-	assign product[15] = 1'b0;
-	assign product[16] = 1'b0;
-	assign product[17] = 1'b0;
-	assign product[18] = 1'b0;
-	assign product[19] = 1'b0;
-	assign product[20] = 1'b0;
-	assign product[21] = 1'b0;
-	assign product[22] = 1'b0;
-	assign product[23] = 1'b0;
-	assign product[24] = 1'b0;
-	assign product[25] = 1'b0;
-	assign product[26] = 1'b0;
-	assign product[27] = 1'b0;
-	assign product[28] = 1'b0;
-	assign product[29] = 1'b0;
-	assign product[30] = 1'b0;
-	assign product[31] = 1'b0;
-
+	assign product[16] = carrylistB[0];
+	assign product[17] = carrylistB[1];
+	assign product[18] = carrylistB[2];
+	assign product[19] = carrylistB[3];
+	assign product[20] = carrylistB[4];
+	assign product[21] = carrylistB[5];
+	assign product[22] = carrylistB[6];
+	assign product[23] = carrylistB[7];
+	assign product[24] = carrylistB[8];
+	assign product[25] = carrylistB[9];
+	assign product[26] = carrylistB[10];
+	assign product[27] = carrylistB[11];
+	assign product[28] = carrylistB[12];
+	assign product[29] = carrylistB[13];
+	assign product[30] = carrylistB[14];
 
 endmodule
 
@@ -266,8 +322,8 @@ module TestBench();
   reg [7:0] charA;
   
   initial begin
-    assign inputA  = 5;
-	assign inputB  = 4;
+    assign inputA  = 255;
+	assign inputB  = 127;
 	assign command = 1;
 	
 
