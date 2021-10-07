@@ -92,7 +92,7 @@ module MULT_ASSIST(inputA,bitB,carryinbit,carryinlist,carryoutbit,carryoutlist,p
 	output carryoutbit;
 	output [14:0] carryoutlist;
 	output productbit;
-	wire c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14,c15,c16,c17,c18,c19,c20,c21,c22,c23,c24,c25,c26,c27,c28,c29,c30,c31; //Carry Interfaces
+	wire c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14,c15; //Carry Interfaces
 
 	HalfAdder A0(inputA[0]&bitB,		carryinlist[0],					c1,				productbit);
 	FullAdder A1(inputA[1]&bitB,	 	carryinlist[1],			c1,		c2,				carryoutlist[0]);
@@ -135,7 +135,7 @@ module MULT(inputA,inputB,product);
 	wire [14:0] carrylistN;
 	wire [14:0] carrylistO;
 	wire [14:0] carrylistP;
-	wire c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14,c15,c16,c17,c18,c19,c20,c21,c22,c23,c24,c25,c26,c27,c28,c29,c30,c31; //Carry Interfaces
+	wire c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14,c15,c16,c17,c18,c19,c20,c21,c22,c23,c24,c25,c26,c27,c28,c29,c30; //Carry Interfaces
 
 	HalfAdder A1(inputA[0]&inputB[0], 	 	1'b0,			c1, 			product[0]);
 	HalfAdder A2(inputA[1]&inputB[0], 	 	c1,				c2,				carrylistA[0]);
