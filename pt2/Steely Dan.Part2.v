@@ -320,20 +320,37 @@ module TestBench();
   BreadBoard ALU(inputA,inputB,command,result,error);
   
   initial begin
-    assign inputA  = 16'b0000011111111111;
-	assign inputB  = 16'b0000000111111111;
+    assign inputA  = 16'b0000000011111001;
+	assign inputB  = 16'b0000000001000101;
 	assign command =  1;
 
-	#60;
+	#10;
 	$display("[Input A:%6d, Input B:%6d][Add:%b][Output:%10d, Error: %b]",inputA,inputB,command,result,error);
   
 	assign command = 2;
-	#60;
+	#10;
 
 	$display("[Input A:%6d, Input B:%6d][Sub:%b][Output:%10d, Error: %b]",inputA,inputB,command,result,error);
 	
 	assign command = 3;
-	#60;
+	#10;
+
+	$display("[Input A:%6d, Input B:%6d][Mul:%b][Output:%10d, Error: %b]",inputA,inputB,command,result,error);
+	
+	assign inputA  = 16'b0111110100000000;
+	assign inputB  = 16'b0011111010000001;
+	assign command =  1;
+
+	#10;
+	$display("[Input A:%6d, Input B:%6d][Add:%b][Output:%10d, Error: %b]",inputA,inputB,command,result,error);
+  
+	assign command = 2;
+	#10;
+
+	$display("[Input A:%6d, Input B:%6d][Sub:%b][Output:%10d, Error: %b]",inputA,inputB,command,result,error);
+	
+	assign command = 3;
+	#10;
 
 	$display("[Input A:%6d, Input B:%6d][Mul:%b][Output:%10d, Error: %b]",inputA,inputB,command,result,error);
 
