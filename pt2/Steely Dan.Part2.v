@@ -249,9 +249,6 @@ wire [3:0]command;
 reg [31:0]result;
 reg error;
 
-reg [31:0]debug;
-
-
 //Local Variables
 //Full Adder
 reg mode;
@@ -290,15 +287,6 @@ assign channels[12]=0;//GROUND=0
 assign channels[13]=0;//GROUND=0
 assign channels[14]=0;//GROUND=0
 assign channels[15]=0;//GROUND=0
-
-/*always @(*) begin
-	debug = b;
-	#60
-	$display("%b", debug);
-	debug = product;
-	#10
-	$display("%b", debug);
-end*/
 
 always @(*)  
 begin
